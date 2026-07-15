@@ -20,3 +20,5 @@ Python 3.x
 
 ```bash
 python password_checker.py
+
+<img width="632" height="126" alt="image" src="https://github.com/user-attachments/assets/8c790bc8-c35a-43c0-aea6-4e1f01734868" />
