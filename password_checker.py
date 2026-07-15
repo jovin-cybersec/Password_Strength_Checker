@@ -1,34 +1,38 @@
-import string
 import random
+import string
+import re
 
 
-SPECIAL = "!@#$%^&*()-_=+[]{}|;:,.<>?/"
-
-def password_strength(password):
+def check_strength(password):
     score = 0
     feedback = []
 
+    # Length
     if len(password) >= 8:
         score += 1
     else:
-        feedback.append("Password should be at least 8 characters.")
+        feedback.append("Use at least 8 characters.")
 
-    if any(c.islower() for c in password):
-        score += 1
-    else:
-        feedback.append("Add lowercase letters.")
-
-    if any(c.isupper() for c in password):
+    # Uppercase
+    if re.search(r"[A-Z]", password):
         score += 1
     else:
         feedback.append("Add uppercase letters.")
 
-    if any(c.isdigit() for c in password):
+    # Lowercase
+    if re.search(r"[a-z]", password):
+        score += 1
+    else:
+        feedback.append("Add lowercase letters.")
+
+    # Numbers
+    if re.search(r"\d", password):
         score += 1
     else:
         feedback.append("Add numbers.")
 
-    if any(c in SPECIAL for c in password):
+    # Special Characters
+    if re.search(r"[!@#$%^&*(),.?\":{}|<>]", password):
         score += 1
     else:
         feedback.append("Add special characters.")
@@ -47,42 +51,74 @@ def password_strength(password):
     return strength, feedback
 
 
-def suggest_password(base_password):
-    chars = list(base_password)
+def alternate_case(text):
+    result = ""
 
-    chars.append(random.choice(string.ascii_uppercase))
-    chars.append(random.choice(string.ascii_lowercase))
-    chars.append(random.choice(string.digits))
-    chars.append(random.choice(SPECIAL))
+    for i, ch in enumerate(text):
+        if ch.isalpha():
+            if i % 2 == 0:
+                result += ch.lower()
+            else:
+                result += ch.upper()
+        else:
+            result += ch
 
-    random.shuffle(chars)
+    return result
 
-    while len(chars) < 12:
-        chars.append(
-            random.choice(
-                string.ascii_letters + string.digits + SPECIAL
-            )
-        )
 
-    random.shuffle(chars)
+def generate_suggestions(password):
 
-    return "".join(chars)
+    suggestions = []
+
+    special = "@#$%&!"
+    numbers = "123456789"
+
+    # Suggestion 1
+    s1 = alternate_case(password.replace("@", "")).replace("!", "")
+    s1 += random.choice(numbers)
+    s1 += "@"
+    suggestions.append(s1)
+
+    # Suggestion 2
+    s2 = password.title().replace("@", "")
+    s2 += str(random.randint(10, 99))
+    s2 += random.choice(special)
+    suggestions.append(s2)
+
+    # Suggestion 3
+    s3 = "".join(random.sample(password, len(password)))
+    suggestions.append(s3)
+
+    # Suggestion 4
+    s4 = alternate_case(password)
+    suggestions.append(s4)
+
+    # Suggestion 5
+    s5 = password[::-1]
+    suggestions.append(s5)
+
+    return suggestions
 
 
 def main():
-    password = input("Enter your password: ")
 
-    strength, feedback = password_strength(password)
+    password = input("Enter Password: ")
+
+    strength, feedback = check_strength(password)
 
     print("\nPassword Strength:", strength)
 
     if feedback:
-        print("\nSuggestions:")
+        print("\nSuggestions to Improve:")
         for item in feedback:
             print("-", item)
 
-    print("\nSuggested Strong Password:")
-    print(suggest_password(password))
+    print("\nGenerated Password Suggestions:")
+
+    suggestions = generate_suggestions(password)
+
+    for i, pwd in enumerate(suggestions, start=1):
+        print(f"{i}. {pwd}")
 
 
 if __name__ == "__main__":
