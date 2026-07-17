@@ -1,4 +1,5 @@
 import string
+import random
 
 
 def check_strength(password):
@@ -32,6 +33,24 @@ def check_strength(password):
     else:
         return "Weak"
     
+
+def generate_suggestions(password):
+
+    suggestions = []
+
+    # Suggestion 1
+    suggestions.append(password.swapcase())
+
+    # Suggestion 2
+    suggestions.append(password[::-1])
+
+    # Suggestion 3
+    chars = list(password)
+    random.shuffle(chars)
+    suggestions.append("".join(chars))
+
+    return suggestions
+
 def get_password():
     while True:
         password = input("Enter your password: ")
@@ -48,4 +67,9 @@ password = get_password()
 strength = check_strength(password)
 
 print("Password Strength:", strength)
+
+print("\nSuggested Passwords:")
+
+for p in generate_suggestions(password):
+    print(p)
 
