@@ -11,15 +11,19 @@ def check_strength(password):
 
     if any(c.islower() for c in password):
         score += 1
-
     if any(c.isupper() for c in password):
         score += 1
-
+    else:
+         print("❌ Password should contain at least one uppercase letter.")
     if any(c.isdigit() for c in password):
         score += 1
+    else:
+        print("❌ Password should contain at least one numeric value. ")
 
     if any(c in string.punctuation for c in password):
         score += 1
+    else:
+        print("❌ Password should contain at Special Character.")
 
     if score == 5:
         return "Very Strong"
