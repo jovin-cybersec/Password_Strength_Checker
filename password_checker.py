@@ -56,7 +56,7 @@ def get_password():
         password = input("Enter your password: ")
 
         if len(password) < 8:
-            print("\nPassword must contain at least 8 characters.")
+            print("❌ Password must be at least 8 characters long.\n")
             print("Please enter the password again.\n")
         else:
             return password
