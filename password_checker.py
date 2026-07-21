@@ -1,3 +1,36 @@
+import random
+
+# -------------------------------
+# Password Suggestion Generator
+# -------------------------------
+def generate_suggestions(password):
+    suggestions = []
+
+    # Reverse digits
+    digits = ''.join(c for c in password if c.isdigit())
+    letters = ''.join(c for c in password if c.isalpha())
+    specials = ''.join(c for c in password if not c.isalnum())
+
+    if digits:
+        suggestions.append(letters.capitalize() + specials + digits[::-1])
+
+    # Alternate uppercase/lowercase
+    alt = ""
+    upper = True
+    for ch in letters:
+        if upper:
+            alt += ch.upper()
+        else:
+            alt += ch.lower()
+        upper = not upper
+
+    if digits:
+        shuffled_digits = ''.join(random.sample(digits, len(digits)))
+    else:
+        shuffled_digits = str(random.randint(100, 999))
+
+    suggestions.append(alt + specials + shuffled_digits)
+
 #Password Strength Checker
 def check_strength(password):
     score = 0
@@ -50,3 +83,12 @@ while True:
     strength, missing = check_strength(password)
 
     print("\nPassword Strength:", strength)
+
+    if missing:
+        print("\nSuggestions to improve your password:")
+        for item in missing:
+            print("•", item)
+
+    print("\nSuggested Passwords:")
+    for p in generate_suggestions(password):
+        print("->", p)
