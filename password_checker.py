@@ -104,3 +104,12 @@ while True:
     print("\nSuggested Passwords:")
     for p in generate_suggestions(password):
         print("->", p)
+
+
+    if len(password) < 8 or strength == "Weak":
+        print("\nPassword is too weak. Please try again.\n")
+    else:
+        print("\nPassword accepted!")
+        break
+    
+
