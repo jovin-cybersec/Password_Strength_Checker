@@ -31,6 +31,18 @@ def generate_suggestions(password):
 
     suggestions.append(alt + specials + shuffled_digits)
 
+    # Random capitalization
+    random_case = ""
+    for ch in letters:
+        random_case += ch.upper() if random.choice([True, False]) else ch.lower()
+
+    random_special = specials if specials else "@"
+    random_num = ''.join(str(random.randint(0, 9)) for _ in range(max(3, len(digits))))
+
+    suggestions.append(random_case + random_special + random_num)
+
+    return suggestions
+
 #Password Strength Checker
 def check_strength(password):
     score = 0
