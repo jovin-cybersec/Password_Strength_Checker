@@ -1,79 +1,52 @@
-import string
-import random
-
-
+#Password Strength Checker
 def check_strength(password):
-
     score = 0
+    missing = []
+
+    has_upper = any(c.isupper() for c in password)
+    has_lower = any(c.islower() for c in password)
+    has_digit = any(c.isdigit() for c in password)
+    has_special = any(not c.isalnum() for c in password)
 
     if len(password) >= 8:
         score += 1
-
-    if any(c.islower() for c in password):
-        score += 1
-    if any(c.isupper() for c in password):
-        score += 1
     else:
-         print("❌ Password should contain at least one uppercase letter.")
-    if any(c.isdigit() for c in password):
+        missing.append("Minimum length of 8 characters")
+
+    if has_upper:
         score += 1
     else:
-        print("❌ Password should contain at least one numeric value. ")
+        missing.append("At least one uppercase letter")
 
-    if any(c in string.punctuation for c in password):
+    if has_lower:
         score += 1
     else:
-        print("❌ Password should contain at Special Character.")
+        missing.append("At least one lowercase letter")
 
-    if score == 5:
-        return "Very Strong"
-
-    elif score == 4:
-        return "Strong"
-
-    elif score == 3:
-        return "Medium"
-
+    if has_digit:
+        score += 1
     else:
-        return "Weak"
-    
+        missing.append("At least one number")
 
-def generate_suggestions(password):
+    if has_special:
+        score += 1
+    else:
+        missing.append("At least one special character")
 
-    suggestions = []
+    if score <= 2:
+        strength = "Weak"
+    elif score == 3 or score == 4:
+        strength = "Medium"
+    else:
+        strength = "Strong"
 
-    # Suggestion 1
-    suggestions.append(password.swapcase())
-
-    # Suggestion 2
-    suggestions.append(password[::-1])
-
-    # Suggestion 3
-    chars = list(password)
-    random.shuffle(chars)
-    suggestions.append("".join(chars))
-
-    return suggestions
-
-def get_password():
-    while True:
-        password = input("Enter your password: ")
-
-        if len(password) < 8:
-            print("❌ Password must be at least 8 characters long.\n")
-            print("Please enter the password again.\n")
-        else:
-            return password
+    return strength, missing
 
 
-password = get_password()
+#MAIN PROGRAM
+while True:
+    password = input("Enter your password: ")
 
-strength = check_strength(password)
+    strength, missing = check_strength(password)
 
-print("Password Strength:", strength)
-
-print("\nSuggested Passwords:")
-
-for p in generate_suggestions(password):
-    print(p)
-
+    print("\nPassword Strength:", strength)
