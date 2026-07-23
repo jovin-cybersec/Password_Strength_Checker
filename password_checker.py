@@ -56,27 +56,27 @@ def check_strength(password):
     if len(password) >= 8:
         score += 1
     else:
-        missing.append("Minimum length of 8 characters")
+        missing.append("❌ Minimum length of 8 characters")
 
     if has_upper:
         score += 1
     else:
-        missing.append("At least one uppercase letter")
+        missing.append("❌ At least one uppercase letter")
 
     if has_lower:
         score += 1
     else:
-        missing.append("At least one lowercase letter")
+        missing.append("❌ At least one lowercase letter")
 
     if has_digit:
         score += 1
     else:
-        missing.append("At least one number")
+        missing.append("❌ At least one number")
 
     if has_special:
         score += 1
     else:
-        missing.append("At least one special character")
+        missing.append("❌ At least one special character")
 
     if score <= 2:
         strength = "Weak"
@@ -107,9 +107,9 @@ while True:
 
 
     if len(password) < 8 or strength == "Weak":
-        print("\nPassword is too weak. Please try again.\n")
+        print("\n ❌Password is too weak. Please try again.\n")
     else:
-        print("\nPassword accepted!")
+        print("\n ✅Password accepted!")
         break
     
 
