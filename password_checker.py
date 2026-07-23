@@ -80,10 +80,12 @@ def check_strength(password):
 
     if score <= 2:
         strength = "Weak"
-    elif score == 3 or score == 4:
+    elif score == 3 :
         strength = "Medium"
-    else:
+    elif score == 4:
         strength = "Strong"
+    else:
+        strength = "Very Strong"
 
     return strength, missing
 
